@@ -7,18 +7,33 @@ class MoviesController < ApplicationController
   end
 
   def index
+    #session.clear  
+    
     if params[:redirect].nil? && params[:sort].nil? && params[:ratings].nil? && (!session[:sort].nil? || !session[:ratings].nil?)
 
       redirect_to movies_path(:redirect => 1, :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) { |k, h| h[k] = 1 })
     
     end
-    
+
     @movies = Movie.all
     @ratings_to_show = []
     @sort = nil
     
+    #if session[:ratings] != nil
+	    #@ratings_to_show = session[:ratings]
+    #end
+
     @page = params[:page]
-    
+    #if @page != nil and session[:page] != nil
+    #        @page = session[:page]
+    #elsif @page == nil and session[:page] != nil
+    #	session[:page] = nil
+    #end
+
+    #if session[:sort] != nil
+	#    @sort = session[:sort]
+    #end
+
     if params[:ratings] != nil
 	    @ratings_to_show = params[:ratings].keys
 	    @movies = Movie.with_ratings(@ratings_to_show)
@@ -43,7 +58,6 @@ class MoviesController < ApplicationController
     
     session[:sort] = @sort
     session[:ratings] = @ratings_to_show
-    
   end
 
   def new
