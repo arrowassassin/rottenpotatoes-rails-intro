@@ -2,7 +2,7 @@
 <h2>All Movies</h2>
 
 <%#  Part 1: Start here... %>
-<%= form_tag movies_path, :id => 'ratings_form', :method => :get do %>
+<%= form_tag movies_path({"refresh":1}), :id => 'ratings_form', :method => :get do %>
   
   Include:
   
@@ -37,7 +37,7 @@
           <%= movie.release_date %>
         </td>
         <td>
-		<%= link_to "More about #{movie.title}", movie_path(movie) %>
+		<%= link_to "More about #{movie.title}", movie_path(movie, {:page=>1}) %>
         </td>
       </tr>
     <% end %>

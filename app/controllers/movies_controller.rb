@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
       redirect_to movies_path(:redirect => 1 , :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) {|x, y| y[x] = "True"})
     
     end
-
+  
     @movies = Movie.all
     @ratings = Movie.get_unique_ratings
     @ratings_checks = @ratings
