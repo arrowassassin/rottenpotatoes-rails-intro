@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     # @ratings = Movie.get_unique_ratings
     @ratings_checks = []
-    @sort_movies = nil
+    @sort = nil
     
  
     
@@ -25,32 +25,32 @@ class MoviesController < ApplicationController
     if params[:ratings] != nil
       
 	    @ratings_checks = params[:ratings].keys
-	    @movies = @movies.where(rating: @ratings_checks)
+	    @movies = Movie.with_ratings(@ratings_to_show)
 	    
     elsif @page == nil
     	@ratings_checks = []
     	    
     	    
     else
-	    @movies = @movies.where(rating: @ratings_checks)
+	    @movies = Movie.with_ratings(@ratings_to_show)
     end
     
     if session[:checkedin] == nil
-      @ratings_checks = Movie.get_unique_ratings
+      @ratings_checks = Movie.all_ratings
 	    session[:checkedin] = 1
     end
     
-    @ratings = Movie.get_unique_ratings
+    @ratings = Movie.all_ratings
     
     if params[:sort] != nil
-	    @sort_movies = params[:sort]
+	    @sort = params[:sort]
     end
     
-    if @sort_movies != nil
-	    @movies = @movies.order("#{@sort_movies} ASC")
+    if @sort != nil
+	    @movies = @movies.order("#{@sort} ASC")
     end
     
-    session[:sort] = @sort_movies
+    session[:sort] = @sort
     session[:ratings] = @ratings_checks
   
     flash.keep
