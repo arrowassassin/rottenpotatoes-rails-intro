@@ -8,6 +8,7 @@ class Movie < ActiveRecord::Base
 
 	def self.with_ratings(ratings_list)
 		filtered_movies = nil
+		
 		if ratings_list == nil
 			filtered_movies = self.all
 		else
