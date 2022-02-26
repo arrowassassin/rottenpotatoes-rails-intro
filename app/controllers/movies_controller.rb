@@ -8,42 +8,53 @@ class MoviesController < ApplicationController
     
     if params[:redirect].nil? && params[:sort].nil? && params[:ratings].nil? && (!session[:sort].nil? || !session[:ratings].nil?)
 
-      redirect_to movies_path(:redirect => 1, :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) { |x, y| y[x] = 1 })
+      redirect_to movies_path(:redirect => 1 , :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) {|x, y| y[x] = "True"})
     
     end
 
     @movies = Movie.all
-    @ratings_to_show = []
-    @sort = nil
-
+    @ratings = Movie.get_unique_ratings
+    @ratings_checks = @ratings
+    @sort_movies = nil
+    
+ 
+    
 
     @page = params[:page]
 
     if params[:ratings] != nil
-	    @ratings_to_show = params[:ratings].keys
-	    @movies = Movie.with_ratings(@ratings_to_show)
+      
+	    @ratings_checks = params[:ratings].keys
+	    @movies = @movies.where(rating: @ratings_checks)
+	    
     elsif @page == nil
-    	    @ratings_to_show = []
+    	@ratings_checks = []
+    	    
+    	    
     else
-	    @movies = Movie.with_ratings(@ratings_to_show)
+	    @movies = @movies.where(rating: @ratings_checks)
     end
+    
     if session[:checkedin] == nil
-            @ratings_to_show = Movie.all_ratings
+      @ratings_checks = params[:ratings].keys
 	    session[:checkedin] = 1
     end
-    @all_ratings = Movie.all_ratings
+    
+    # @ratings = Movie.get_unique_ratings
     
     if params[:sort] != nil
-	    @sort = params[:sort]
+	    @sort_movies = params[:sort]
     end
     
-    if @sort != nil
-	    @movies = @movies.order("#{@sort} ASC")
+    if @sort_movies != nil
+	    @movies = @movies.order("#{@sort_movies} ASC")
     end
     
-    session[:sort] = @sort
-    session[:ratings] = @ratings_to_show
+    session[:sort] = @sort_movies
+    session[:ratings] = @ratings_checks
   
+    flash.keep
+    
   end
   def new
     # default: render 'new' template

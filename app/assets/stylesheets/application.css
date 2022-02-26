@@ -13,4 +13,8 @@
  *= require_tree .
  *= require_self
  */
-table#movies th.hilite {background-color: orange;}
+table#movies th.hilite {
+    font-size: large;
+    font-family: cursive;
+    font-style: italic;
+}
