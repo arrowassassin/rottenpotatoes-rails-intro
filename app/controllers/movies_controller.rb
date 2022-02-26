@@ -8,7 +8,7 @@ class MoviesController < ApplicationController
     
     if params[:redirect].nil? && params[:sort].nil? && params[:ratings].nil? && (!session[:sort].nil? || !session[:ratings].nil?)
 
-      redirect_to movies_path(:redirect => 1, :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) { |k, h| h[k] = 1 })
+      redirect_to movies_path(:redirect => 1, :sort => session[:sort], :ratings => session[:ratings].each_with_object({}) { |x, y| y[x] = 1 })
     
     end
 
