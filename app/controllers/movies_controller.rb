@@ -13,8 +13,8 @@ class MoviesController < ApplicationController
     end
   
     @movies = Movie.all
-    @ratings = Movie.get_unique_ratings
-    @ratings_checks = @ratings
+    # @ratings = Movie.get_unique_ratings
+    @ratings_checks = []
     @sort_movies = nil
     
  
@@ -36,11 +36,11 @@ class MoviesController < ApplicationController
     end
     
     if session[:checkedin] == nil
-      @ratings_checks = params[:ratings].keys
+      @ratings_checks = Movie.get_unique_ratings
 	    session[:checkedin] = 1
     end
     
-    # @ratings = Movie.get_unique_ratings
+    @ratings = Movie.get_unique_ratings
     
     if params[:sort] != nil
 	    @sort_movies = params[:sort]
