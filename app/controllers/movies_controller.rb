@@ -8,8 +8,8 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
-    @all_ratings = Movie.get_unique_ratings
-    @ratings_checkbox = @all_ratings
+    @ratings = Movie.get_unique_ratings
+    @ratings_checkbox = @ratings
     
         
     if params[:sort]
